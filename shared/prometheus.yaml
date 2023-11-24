@@ -1,0 +1,17 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'prometheus:9090' ]
+  - job_name: 'tempo'
+    static_configs:
+      - targets: [ 'tempo:3200' ]
+  - job_name: 'frontend'
+    metrics_path: /prometheus
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets: [ 'host.docker.internal:3700' ]
