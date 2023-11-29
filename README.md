@@ -48,16 +48,7 @@ docker-compose down -v
 ```
 
 
- docker run --name grafana-agent -p 8888:8888/tcp -d --network local_grafananet \
-  -v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/data:/etc/agent/data \
-  -v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/agent.yaml:/etc/agent/agent.yaml \
-  grafana/agent:v0.36.2 --config.file=/etc/agent/agent.yaml --enable-features=integrations-next
-
-
-=============
-versi2
-
-   docker run --name grafana-agent -p 12345:12349/tcp -d --network local_grafananet \
-  -v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/data:/etc/agent/data \
-  -v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/shared/agent.yaml:/etc/agent/agent.yaml \
-  grafana/agent:v0.36.2 --config.file=/etc/agent/agent.yaml --enable-features=integrations-next
+docker run --name grafana-agent -p 12345:12349/tcp -d --network local_grafananet \
+-v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/data:/etc/agent/data \
+-v /Users/heryseptyadi/Developments/Works/payuung/grafana-faro/shared/agent.yaml:/etc/agent/agent.yaml \
+grafana/agent:v0.36.2 --config.file=/etc/agent/agent.yaml --enable-features=integrations-next

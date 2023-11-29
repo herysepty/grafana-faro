@@ -9,7 +9,8 @@ export default function Page() {
   useEffect(() => {
 
     const faro = initializeFaro({
-      url: 'http://host.docker.internal:12345/collect',
+      url: 'http://localhost:8888/collect',
+      apiKey: 'secret',
       instrumentations: [
         ...getWebInstrumentations(),
         new TracingInstrumentation(),
@@ -21,49 +22,7 @@ export default function Page() {
       internalLoggerLevel: InternalLoggerLevel.VERBOSE,
     });
     
-    // const faro = initializeFaro({
-    //   url: 'http://localhost:12345/collect',
-    //   apiKey: 'secret',
-    //   instrumentations: [...getWebInstrumentations({ captureConsole: true }), new TracingInstrumentation()],
-    //   app: {
-    //     name: 'frontend',
-    //     version: '1.0.0',
-    //   },
-    //   internalLoggerLevel: InternalLoggerLevel.VERBOSE,
-    // });
-    
-    // // start a span
-    // faro.api
-    //   .getOTEL()
-    //   ?.trace.getTracer('frontend')
-    //   .startActiveSpan('hello world', (span) => {
-    //     // send a log message
-    //     faro.api.pushLog(['hello world']);
-    //     span.end();
-    //   });
-    
-    // will be captured
-    // throw new Error('oh no');
-        // const faro = initializeFaro({
-        //     url: 'http://localhost:12345/collect',
-        //     apiKey: 'secret',
-        //     app: {
-        //       name: 'frontend',
-        //       version: '1.0.0',
-        //     },
-        //     internalLoggerLevel: InternalLoggerLevel.VERBOSE,
-        //     // internalLoggerLevel: InternalLoggerLevel.VERBOSE,
-
-        // });
-
-        faro?.api?.pushLog(['hello world']);
-        // faro?.api?.pushError(new Error('oh no'));
-
-          
-        //   // will be captured
-        //   throw new Error('oh no');
-          
-        //   // push error manually
+    faro?.api?.pushLog(['hello world']);
 
     const fetchData = async () => {
       const response = await fetch('https://api.sampleapis.com/futurama/info')
@@ -71,7 +30,7 @@ export default function Page() {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       const result = await response.json()
-      faro?.api?.pushError(result);
+      faro?.api?.pushLog(result);
 
         // send a log message
       setData(result[0].synopsis)

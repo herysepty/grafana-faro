@@ -34,10 +34,17 @@ services:
 
   tempo:
     image: grafana/tempo:latest
-    command: [ "-config.file=/etc/tempo.yaml" ]
+    command: 
+      - "-config.file=/etc/tempo.yaml"
+      # - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
+      # - "-storage.trace.local.path=/tmp/tempo/traces"
+      # - "-storage.trace.wal.path=/tmp/tempo/wal"        # tell tempo where to store the wal
+      - "-auth.enabled=false"                           # disables the requirement for the X-Scope-OrgID header
+      - "-server.http-listen-port=3200"
     volumes:
       - ./shared/tempo.yaml:/etc/tempo.yaml
       - ./local/tempo-data:/tmp/tempo
+      
     ports:
       - "14268:14268"  # jaeger ingest
       - "3200:3200"   # tempo
@@ -88,10 +95,12 @@ services:
       - grafananet
 
   grafana-agent:
-    image: grafana/agent:latest
+    image: grafana/agent:main
     # image: grafana/agent:v0.36.2
     ports:
+      - "8888:8888"
       - "12345:12345"
+      - "12346:12346"
     volumes:
       - ./local/data:/etc/agent/data
       - ./shared/agent.yaml:/etc/agent-config/agent.yaml
@@ -109,6 +118,7 @@ services:
       HOSTNAME: agent
       LOKI_HOST: loki:3100
       TEMPO_HOST: tempo:4317
+      REMOTE_WRITE_HOST: prometheus:9090
     networks:
       - grafananet
 

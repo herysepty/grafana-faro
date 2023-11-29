@@ -21,7 +21,12 @@ traces:
       receivers:
         otlp:
           protocols:
-            grpc: null
+            grpc:
+            http:
+              cors:
+                allowed_origins:
+                  - http://localhost:1234
+                max_age: 7200
 integrations:
   app_agent_receiver_configs:
     - autoscrape:
@@ -32,10 +37,13 @@ integrations:
       traces_instance: 'default'
       server:
         host: 0.0.0.0
-        port: 12347
-        # api_key: 'secret' # optional, if set, client will be required to provide it via x-api-key header
+        port: 8888
+        api_key: 'secret' # optional, if set, client will be required to provide it via x-api-key header
         cors_allowed_origins:
           - 'http://localhost:3700'
+          - 'http://localhost:3000'
+          - 'http://localhost:3002'
+          - 'http://localhost:3003'
       logs_labels: # labels to add to loki log record
         app: frontend # static value
         kind: # value will be taken from log items. exception, log, measurement, etc
