@@ -30,7 +30,7 @@ export default function Page() {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       const result = await response.json()
-      faro?.api?.pushLog(result);
+      faro?.api?.pushLog([JSON.stringify(result)]);
 
         // send a log message
       setData(result[0].synopsis)
